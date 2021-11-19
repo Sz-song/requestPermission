@@ -2,4 +2,5 @@
     <string name="app_name">Permission</string>
     <string name="single_permission">单一权限</string>
     <string name="multi_permissions">多个权限</string>
+    <string name="denied_dialog_permissions">权限拒绝的弹窗</string>
 </resources>

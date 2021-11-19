@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import com.song.permission.callback.PermissionsCallback
+import com.song.permission.dialog.DeniedDialog
 
 class RequestPermission {
 
@@ -16,6 +17,7 @@ class RequestPermission {
     private var fragment: Fragment? = null
     private var permissions: Array<String> ?= null
     var permissionCallback: PermissionsCallback? = null
+    var deniedDialog: DeniedDialog? = null
 
 
 
@@ -26,6 +28,7 @@ class RequestPermission {
     constructor(fragment: Fragment) {
         this.fragment = fragment
     }
+
 
     fun permission(vararg permission: String) : RequestPermission{
         this.permissions= arrayOf(*permission)
@@ -38,18 +41,18 @@ class RequestPermission {
         return this
     }
 
+    fun addDeniedDialog(deniedDialog: DeniedDialog): RequestPermission{
+        this.deniedDialog= deniedDialog
+        return this
+    }
 
     fun request() {
-        if(permissionCallback==null){
-            throw IllegalArgumentException( "can`t get permissionCallback (请求权限回调结果不能为空)")
-        }
-
         if(permissions==null||permissions?.size==0){
             permissionCallback?.onResult(true, listOf(), listOf())
             return
         }
 
-        invisibleFragment.request(permissions!!,permissionCallback!!)
+        invisibleFragment.request(permissions!!, permissionCallback ,deniedDialog)
     }
 
 

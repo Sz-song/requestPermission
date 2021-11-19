@@ -16,9 +16,9 @@
         android:layout_height="1dp"
         android:background="#f4f4f4"/>
     <TextView
-        android:id="@+id/multi_permissions"
+        android:id="@+id/denied_dialog_permissions"
         android:layout_width="match_parent"
-        android:text="@string/multi_permissions"
+        android:text="@string/denied_dialog_permissions"
         android:gravity="center"
         android:layout_height="50dp"/>
     <View
