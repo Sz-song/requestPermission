@@ -1,14 +1,23 @@
 package com.song.permission
 
-import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
+
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
+import com.song.permission.callback.PermissionsCallback
 
 class RequestPermission {
+
+    companion object {
+        private const val FRAGMENT_TAG = "RequestFragment"
+    }
+
     private var activity: FragmentActivity? = null
     private var fragment: Fragment? = null
+    private var permissions: Array<String> ?= null
+    var permissionCallback: PermissionsCallback? = null
+
+
 
     constructor(activity: FragmentActivity) {
         this.activity = activity
@@ -17,30 +26,31 @@ class RequestPermission {
     constructor(fragment: Fragment) {
         this.fragment = fragment
     }
-    companion object {
-        /**
-         * TAG of RequestFragment to find and create.
-         */
-        private const val FRAGMENT_TAG = "RequestFragment"
+
+    fun permission(vararg permission: String) : RequestPermission{
+        this.permissions= arrayOf(*permission)
+        return this
     }
 
-    fun request(permission :String) {
-        invisibleFragment.request(permission)
+
+    fun requestCallback(permissionCallback: PermissionsCallback): RequestPermission{
+        this.permissionCallback= permissionCallback
+        return this
     }
-//
-//    fun request(permissions: Array<String>) {
-//        val permissionsLauncher =
-//            activity?.registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions())
-//            { permissionsGranted: Map<String, Boolean> ->
-//                permissionsGranted.entries.forEach {
-//
-//                }
-//            }
-//        permissionsLauncher?.launch(
-//            permissions
-//        )
-//
-//    }
+
+
+    fun request() {
+        if(permissionCallback==null){
+            throw IllegalArgumentException( "can`t get permissionCallback (请求权限回调结果不能为空)")
+        }
+
+        if(permissions==null||permissions?.size==0){
+            permissionCallback?.onResult(true, listOf(), listOf())
+            return
+        }
+
+        invisibleFragment.request(permissions!!,permissionCallback!!)
+    }
 
 
     private val invisibleFragment: RequestFragment

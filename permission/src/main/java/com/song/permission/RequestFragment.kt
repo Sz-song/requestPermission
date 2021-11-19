@@ -1,24 +1,35 @@
 package com.song.permission
 
-import android.util.Log
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import com.song.permission.callback.PermissionsCallback
 
-class RequestFragment:Fragment() {
-    private val singlePermissionLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-            if(isGranted){
-                Toast.makeText(activity,"同意", Toast.LENGTH_SHORT).show()
-            }
-        }
+class RequestFragment : Fragment() {
+
+    var multiPermissionCallback: PermissionsCallback? = null
+    private val grantedList: MutableList<String> = mutableListOf()
+    private val deniedList: MutableList<String> = mutableListOf()
+
+
+    //多个权限请求的回调
     private val multiPermissionsLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { isGrantedMap ->
-            isGrantedMap.entries.forEach{
-                Log.e(it.key,it.value.toString())
+            grantedList.clear()
+            deniedList.clear()
+            isGrantedMap.entries.forEach {
+                if (it.value) {
+                    grantedList.add(it.key)
+                } else {
+                    deniedList.add(it.key)
+                }
             }
+            multiPermissionCallback?.onResult(deniedList.size == 0, grantedList, deniedList)
         }
-    fun request(permission :String){
-        singlePermissionLauncher.launch(permission)
+
+
+    fun request(permissions: Array<String>, callback : PermissionsCallback) {
+        this.multiPermissionCallback = callback
+        multiPermissionsLauncher.launch(permissions)
     }
+
 }
