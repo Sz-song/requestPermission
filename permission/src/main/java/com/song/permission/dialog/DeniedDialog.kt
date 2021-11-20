@@ -5,6 +5,7 @@ import android.content.Context
 import android.view.View
 
 abstract class DeniedDialog(context: Context):Dialog(context){
+
     private val deniedList: MutableList<String> = mutableListOf()
 
     abstract fun getCancelView():View

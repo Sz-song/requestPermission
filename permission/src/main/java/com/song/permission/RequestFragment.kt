@@ -12,7 +12,7 @@ import com.song.permission.dialog.DeniedDialog
 
 class RequestFragment : Fragment() {
 
-    var multiPermissionCallback: PermissionsCallback? = null
+    var permissionCallback: PermissionsCallback? = null
     private val grantedList: MutableList<String> = mutableListOf()
     private val deniedList: MutableList<String> = mutableListOf()
     var deniedDialog: DeniedDialog? = null
@@ -25,8 +25,9 @@ class RequestFragment : Fragment() {
                 deniedList.removeAt(index)
             }
         }
-        multiPermissionCallback?.onResult(deniedList.size == 0, grantedList, deniedList)
+        permissionCallback?.onResult(deniedList.size == 0, grantedList, deniedList)
     }
+
     //权限请求的回调
     private val multiPermissionsLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { isGrantedMap ->
@@ -52,7 +53,7 @@ class RequestFragment : Fragment() {
                     deniedDialog?.dismiss()
                 }
             }
-            multiPermissionCallback?.onResult(deniedList.size == 0, grantedList, deniedList)
+            permissionCallback?.onResult(deniedList.size == 0, grantedList, deniedList)
         }
 
 
@@ -61,7 +62,7 @@ class RequestFragment : Fragment() {
         callback: PermissionsCallback?,
         deniedDialog: DeniedDialog?
     ) {
-        this.multiPermissionCallback = callback
+        this.permissionCallback = callback
         this.deniedDialog = deniedDialog
         multiPermissionsLauncher.launch(permissions)
     }
