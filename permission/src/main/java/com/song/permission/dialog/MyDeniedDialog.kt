@@ -6,7 +6,7 @@ import android.view.View
 import com.song.permission.databinding.DialogMyDeniedBinding
 
 
-class MyDeniedDialog(context: Context):DeniedDialog(context) {
+class MyDeniedDialog(context: Context):PermissionDialog(context) {
 
     private lateinit var binding: DialogMyDeniedBinding
 

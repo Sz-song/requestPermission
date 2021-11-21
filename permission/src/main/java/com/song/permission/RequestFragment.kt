@@ -8,17 +8,19 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.song.permission.callback.PermissionsCallback
-import com.song.permission.dialog.DeniedDialog
+import com.song.permission.dialog.PermissionDialog
 
 class RequestFragment : Fragment() {
 
     var permissionCallback: PermissionsCallback? = null
     private val grantedList: MutableList<String> = mutableListOf()
     private val deniedList: MutableList<String> = mutableListOf()
-    var deniedDialog: DeniedDialog? = null
+    private var deniedDialog: PermissionDialog? = null
+    private var beforeDialog: PermissionDialog? = null
+
 
     //去设置页面的回调
-    private val settingPermissionsLauncher =registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ activityResult ->
+    private val settingPermissionsLauncher =registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
         for (index in (deniedList.size - 1) downTo 0) {
             if (ContextCompat.checkSelfPermission(requireActivity(), deniedList[index]) == PackageManager.PERMISSION_GRANTED) {
                 grantedList.add(deniedList[index])
@@ -60,11 +62,24 @@ class RequestFragment : Fragment() {
     fun request(
         permissions: Array<String>,
         callback: PermissionsCallback?,
-        deniedDialog: DeniedDialog?
+        deniedDialog: PermissionDialog?,
+        beforeDialog: PermissionDialog?
     ) {
         this.permissionCallback = callback
         this.deniedDialog = deniedDialog
-        multiPermissionsLauncher.launch(permissions)
+        this.beforeDialog = beforeDialog
+        if(this.beforeDialog!=null){
+            this.beforeDialog?.show()
+            this.beforeDialog?.getCancelView()?.setOnClickListener {
+                this.beforeDialog?.dismiss()
+            }
+            this.beforeDialog?.getConfirmView()?.setOnClickListener {
+                this.beforeDialog?.dismiss()
+                multiPermissionsLauncher.launch(permissions)
+            }
+        }else{
+            multiPermissionsLauncher.launch(permissions)
+        }
     }
 
 }

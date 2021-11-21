@@ -4,7 +4,7 @@ import android.app.Dialog
 import android.content.Context
 import android.view.View
 
-abstract class DeniedDialog(context: Context):Dialog(context){
+abstract class PermissionDialog(context: Context):Dialog(context){
 
     private val deniedList: MutableList<String> = mutableListOf()
 
