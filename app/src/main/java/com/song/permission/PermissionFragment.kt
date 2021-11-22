@@ -39,7 +39,7 @@ class PermissionFragment:Fragment() {
         view.findViewById<TextView>(R.id.denied_dialog_permissions).setOnClickListener {
             RequestPermission(this)
                 .permission(android.Manifest.permission.READ_CONTACTS,android.Manifest.permission.CALL_PHONE)
-                .addDeniedDialog(MyDeniedDialog(requireContext()))
+                .addDeniedDialog()
                 .requestCallback(object : PermissionsCallback {
                     override fun onResult(allGranted: Boolean, grantedList: List<String>, deniedList: List<String>) {
                         if (allGranted) {
