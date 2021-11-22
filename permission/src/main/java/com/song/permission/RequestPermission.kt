@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import com.song.permission.callback.PermissionsCallback
+import com.song.permission.dialog.MyBeforeDialog
 import com.song.permission.dialog.MyDeniedDialog
 import com.song.permission.dialog.PermissionDialog
 
@@ -36,7 +37,6 @@ class RequestPermission {
         return this
     }
 
-
     fun requestCallback(permissionCallback: PermissionsCallback): RequestPermission{
         this.permissionCallback= permissionCallback
         return this
@@ -47,7 +47,7 @@ class RequestPermission {
         return this
     }
 
-    fun addBeforeDialog(beforeDialog: PermissionDialog): RequestPermission{
+    fun addBeforeDialog(beforeDialog: PermissionDialog = MyBeforeDialog(activity?: fragment!!.requireContext())): RequestPermission{
         this.beforeDialog= beforeDialog
         return this
     }
@@ -57,10 +57,8 @@ class RequestPermission {
             permissionCallback?.onResult(true, listOf(), listOf())
             return
         }
-
         invisibleFragment.request(permissions!!, permissionCallback ,deniedDialog,beforeDialog)
     }
-
 
     private val invisibleFragment: RequestFragment
         get() {

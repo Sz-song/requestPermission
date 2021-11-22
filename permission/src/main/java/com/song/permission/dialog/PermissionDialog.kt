@@ -5,14 +5,10 @@ import android.content.Context
 import android.view.View
 
 abstract class PermissionDialog(context: Context):Dialog(context){
-
-    private val deniedList: MutableList<String> = mutableListOf()
+    var permissionsList:Array<String> = arrayOf()
+    var deniedList: MutableList<String> = mutableListOf()
 
     abstract fun getCancelView():View
     abstract fun getConfirmView():View
 
-    fun getDeniedList(deniedList: MutableList<String>){
-        this.deniedList.clear()
-        deniedList.addAll(deniedList)
-    }
 }

@@ -3,7 +3,8 @@
     <string name="dear_users">亲爱的用户</string>
     <string name="disagree">不同意</string>
     <string name="agree">同意</string>
-    <string name="if_dont_agree_permission">如果您没有授权我们权限，可能导致功能无法正常使用</string>
+    <string name="if_dont_agree_permission">如果您没有授权我们以下权限，可能导致功能无法正常使用</string>
     <string name="go_setting">去设置</string>
     <string name="cancel">取消</string>
+    <string name="plz_allow_following_permissions">请您同意以下权限，来保证APP能够正常使用</string>
 </resources>

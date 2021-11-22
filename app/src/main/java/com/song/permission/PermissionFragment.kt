@@ -20,7 +20,8 @@ class PermissionFragment:Fragment() {
         super.onViewCreated(view, savedInstanceState)
         view.findViewById<TextView>(R.id.single_permission).setOnClickListener {
             RequestPermission(this)
-                .permission(android.Manifest.permission.CAMERA)
+                .permission(android.Manifest.permission.BLUETOOTH)
+                .addBeforeDialog()
                 .requestCallback(object : PermissionsCallback {
                     override fun onResult(allGranted: Boolean, grantedList: List<String>, deniedList: List<String>) {
                         if (allGranted) {
@@ -39,6 +40,7 @@ class PermissionFragment:Fragment() {
         view.findViewById<TextView>(R.id.denied_dialog_permissions).setOnClickListener {
             RequestPermission(this)
                 .permission(android.Manifest.permission.READ_CONTACTS,android.Manifest.permission.CALL_PHONE)
+                .addBeforeDialog()
                 .addDeniedDialog()
                 .requestCallback(object : PermissionsCallback {
                     override fun onResult(allGranted: Boolean, grantedList: List<String>, deniedList: List<String>) {
