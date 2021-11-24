@@ -1,8 +1,10 @@
 package com.song.permission.dialog
 
 import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import com.song.permission.R
 import com.song.permission.databinding.DialogMyBeforeBinding
@@ -23,7 +25,10 @@ class MyBeforeDialog (context: Context):PermissionDialog(context) {
             it.setLayout(width, height)
             it.setBackgroundDrawable(ResourcesCompat.getDrawable(context.resources,R.color.transparent,null))
         }
+    }
 
+    override fun show() {
+        super.show()
         if(permissionsList.isNotEmpty()&&getPermissionStr().isNotEmpty()){
             binding.permissions.text=getPermissionStr()
         }
@@ -40,17 +45,19 @@ class MyBeforeDialog (context: Context):PermissionDialog(context) {
     private fun getPermissionStr() :String{
         val stringBuilder=StringBuffer()
         for (permission in permissionsList) {
-            val permissionGroup = permissionMapOnR[permission]
-            if (permissionGroup != null ) {
-                val text = context.packageManager.getPermissionGroupInfo(permissionGroup, 0).loadLabel(context.packageManager)
-                if(!stringBuilder.contains(text)){
-                    if(stringBuilder.isNotEmpty()){
-                        stringBuilder.append("\n")
-                        stringBuilder.append("- ")
-                        stringBuilder.append(text)
-                    }else{
-                        stringBuilder.append("- ")
-                        stringBuilder.append(text)
+            if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED){
+                val permissionGroup = permissionMapOnR[permission]
+                if (permissionGroup != null ) {
+                    val text = context.packageManager.getPermissionGroupInfo(permissionGroup, 0).loadLabel(context.packageManager)
+                    if(!stringBuilder.contains(text)&&text.isNotEmpty()){
+                        if(stringBuilder.isNotEmpty()){
+                            stringBuilder.append("\n")
+                            stringBuilder.append("- ")
+                            stringBuilder.append(text)
+                        }else{
+                            stringBuilder.append("- ")
+                            stringBuilder.append(text)
+                        }
                     }
                 }
             }

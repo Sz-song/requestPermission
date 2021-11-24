@@ -12,7 +12,7 @@ import com.song.permission.dialog.PermissionDialog
 
 class RequestFragment : Fragment() {
 
-    var permissionCallback: PermissionsCallback? = null
+    private var permissionCallback: PermissionsCallback? = null
     private val grantedList: MutableList<String> = mutableListOf()
     private val deniedList: MutableList<String> = mutableListOf()
     private var deniedDialog: PermissionDialog? = null
@@ -23,10 +23,7 @@ class RequestFragment : Fragment() {
     private val settingLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             for (index in (deniedList.size - 1) downTo 0) {
-                if (ContextCompat.checkSelfPermission(
-                        requireActivity(),
-                        deniedList[index]
-                    ) == PackageManager.PERMISSION_GRANTED
+                if (ContextCompat.checkSelfPermission(requireActivity(), deniedList[index]) == PackageManager.PERMISSION_GRANTED
                 ) {
                     grantedList.add(deniedList[index])
                     deniedList.removeAt(index)
@@ -38,7 +35,6 @@ class RequestFragment : Fragment() {
     //权限请求的回调
     private val permissionsLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { isGrantedMap ->
-            grantedList.clear()
             deniedList.clear()
             isGrantedMap.entries.forEach {
                 if (it.value) {
@@ -56,10 +52,15 @@ class RequestFragment : Fragment() {
                     permissionCallback?.onResult(deniedList.size == 0, grantedList, deniedList)
                 }
                 deniedDialog?.getConfirmView()?.setOnClickListener {
-                    val intent = Intent()
-                    intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-                    intent.data = Uri.parse("package:" + requireActivity().packageName)
-                    settingLauncher.launch(intent)
+                    if(shouldShowRequestPermissionsRationale(deniedList.toTypedArray())){
+                        requestPermissions(deniedList.toTypedArray())
+                    }else{
+                        val intent = Intent()
+                        intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                        intent.data = Uri.parse("package:" + requireActivity().packageName)
+                        settingLauncher.launch(intent)
+                        deniedDialog?.dismiss()
+                    }
                     deniedDialog?.dismiss()
                 }
             } else {
@@ -68,19 +69,19 @@ class RequestFragment : Fragment() {
         }
 
 
-    fun request(
-        permissions: Array<String>,
-        callback: PermissionsCallback?,
-        deniedDialog: PermissionDialog?,
-        beforeDialog: PermissionDialog?
-    ) {
+    fun request(permissions: Array<String>, callback: PermissionsCallback?, deniedDialog: PermissionDialog?, beforeDialog: PermissionDialog?) {
         this.permissionCallback = callback
         this.deniedDialog = deniedDialog
         this.beforeDialog = beforeDialog
-
         this.beforeDialog?.permissionsList = permissions
         this.deniedDialog?.permissionsList = permissions
+        this.grantedList.clear()
+        this.deniedList.clear()
+        requestPermissions(permissions)
+    }
 
+
+    private fun requestPermissions(permissions: Array<String>){
         if (this.beforeDialog != null && shouldShowRequestPermissionsRationale(permissions)) {
             this.beforeDialog?.show()
             this.beforeDialog?.getCancelView()?.setOnClickListener {
@@ -94,7 +95,6 @@ class RequestFragment : Fragment() {
             permissionsLauncher.launch(permissions)
         }
     }
-
 
     private fun shouldShowRequestPermissionsRationale(permissions: Array<String>): Boolean {
         permissions.forEach {
