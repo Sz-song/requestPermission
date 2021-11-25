@@ -256,3 +256,6 @@ abstract class PermissionDialog(context: Context):Dialog(context){
 
 }
 ```
+
+## Thanks
+[PermissionX](https://blog.csdn.net/sinyu890807/category_10108528.html)
