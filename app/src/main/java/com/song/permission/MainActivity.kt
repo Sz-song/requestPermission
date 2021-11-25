@@ -3,20 +3,19 @@ package com.song.permission
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.song.permission.callback.PermissionsCallback
-import com.song.permission.dialog.MyDeniedDialog
+import com.song.permission.databinding.ActivityMainBinding
 
 
 class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        findViewById<TextView>(R.id.single_permission).setOnClickListener {
+        val binding: ActivityMainBinding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        binding.singlePermission.setOnClickListener {
             RequestPermission(this)
                 .permission(android.Manifest.permission.BLUETOOTH)
                 .addBeforeDialog()
@@ -35,7 +34,7 @@ class MainActivity : AppCompatActivity() {
                 }).request()
         }
 
-        findViewById<TextView>(R.id.denied_dialog_permissions).setOnClickListener {
+        binding.deniedDialogPermissions.setOnClickListener {
             RequestPermission(this)
                 .permission(android.Manifest.permission.READ_CONTACTS,android.Manifest.permission.CALL_PHONE)
                 .addBeforeDialog()
@@ -54,6 +53,8 @@ class MainActivity : AppCompatActivity() {
                     }
                 }).request()
         }
+
+
 
     }
 }

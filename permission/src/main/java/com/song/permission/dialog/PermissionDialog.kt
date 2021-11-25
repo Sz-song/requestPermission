@@ -2,7 +2,6 @@ package com.song.permission.dialog
 
 import android.app.Dialog
 import android.content.Context
-import android.os.Bundle
 import android.view.View
 
 abstract class PermissionDialog(context: Context):Dialog(context){

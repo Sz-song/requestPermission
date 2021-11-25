@@ -1,18 +1,19 @@
 package com.song.permission
 
 import android.os.Bundle
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
-import com.song.permission.callback.PermissionsCallback
+import com.song.permission.databinding.ActivityFragmentBinding
 
 class FragmentActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_fragment)
+        val binding: ActivityFragmentBinding = ActivityFragmentBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         val fragment=PermissionFragment()
         val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.frame, fragment)
+        transaction.replace(binding.frame.id, fragment)
         transaction.commit()
     }
 }
