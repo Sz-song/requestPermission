@@ -23,7 +23,7 @@ RequestPermission(this)
                 Toast.makeText(this@MainActivity,stringBuffer.toString(),Toast.LENGTH_SHORT).show()
             }
         }
-    })
+    }).request()
 ```
 
 
@@ -57,7 +57,7 @@ RequestPermission(this)
                 Toast.makeText(this@MainActivity,stringBuffer.toString(),Toast.LENGTH_SHORT).show()
             }
         }
-    })
+    }).request()
 ```
 or
 
@@ -77,7 +77,7 @@ RequestPermission(this)
                 Toast.makeText(this@MainActivity,stringBuffer.toString(),Toast.LENGTH_SHORT).show()
             }
         }
-    })
+    }).request()
 ```
 
 
@@ -113,7 +113,7 @@ RequestPermission(this)
                 Toast.makeText(this@MainActivity,stringBuffer.toString(),Toast.LENGTH_SHORT).show()
             }
         }
-    })
+    }).request()
 ```
 or
 
@@ -133,7 +133,7 @@ RequestPermission(this)
                 Toast.makeText(this@MainActivity,stringBuffer.toString(),Toast.LENGTH_SHORT).show()
             }
         }
-    })
+    }).request()
 ```
 
 
@@ -156,7 +156,7 @@ RequestPermission(this)
                 Toast.makeText(this@MainActivity,stringBuffer.toString(),Toast.LENGTH_SHORT).show()
             }
         }
-    })
+    }).request()
 ```
 
 ##自定义弹窗的参考
