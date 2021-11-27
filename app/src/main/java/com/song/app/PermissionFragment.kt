@@ -1,4 +1,4 @@
-package com.song.permission
+package com.song.app
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,8 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.song.permission.RequestPermission
 import com.song.permission.callback.PermissionsCallback
-import com.song.permission.databinding.FragmentPermissionBinding
+import com.song.app.databinding.FragmentPermissionBinding
 
 class PermissionFragment:Fragment() {
 
@@ -22,7 +23,7 @@ class PermissionFragment:Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding?.singlePermission?.setOnClickListener {
             RequestPermission(this)
-                .permission(android.Manifest.permission.BLUETOOTH)
+                .permission(android.Manifest.permission.CAMERA)
                 .addBeforeDialog()
                 .requestCallback(object : PermissionsCallback {
                     override fun onResult(allGranted: Boolean, grantedList: List<String>, deniedList: List<String>) {

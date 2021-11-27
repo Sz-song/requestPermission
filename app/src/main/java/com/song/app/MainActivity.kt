@@ -1,12 +1,13 @@
-package com.song.permission
+package com.song.app
 
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import com.song.permission.RequestPermission
 import com.song.permission.callback.PermissionsCallback
-import com.song.permission.databinding.ActivityMainBinding
+import com.song.app.databinding.ActivityMainBinding
 
 
 class MainActivity : AppCompatActivity() {
